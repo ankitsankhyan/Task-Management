@@ -1,17 +1,46 @@
 const express = require('express');
 require('dotenv').config();
 const app = express();
-const db = require('./config/db.js');
-const date = require('date-and-time');
+ require('./config/db.js');
+
 const port = 3000;
-
-app.use(express.json());
-
-
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const cors = require('cors');
-app.use(cors());
+const morgan = require('morgan');
 
+app.use(express.json());
+app.use(morgan('dev'));
+
+
+app.use(cors());
+app.use('/api', require('./routes'));
+const swaggerOptions = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Library API',
+        version: '1.0.0',
+        description: 'Library API Information',
+        contact: {
+          name: 'Amazing Developer'
+        }
+      },
+      servers: [
+        {
+          url: 'http://localhost:3000'
+        }
+      ]
+    },
+    // ...
+  
+    apis: ["./routes/*.js"] // path to the api router dictionary
+  };
+
+//   app.use('/api', require('./routes'));
+  const swaggerSpec = swaggerJsDoc(swaggerOptions);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`);
     });
