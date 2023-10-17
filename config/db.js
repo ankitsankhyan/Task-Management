@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb://localhost/Assignment');
+mongoose.connect('mongodb://localhost/Assignment_TaskManagement');
 
 
 const db = mongoose.connection;

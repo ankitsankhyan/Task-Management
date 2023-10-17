@@ -16,13 +16,13 @@ const task = new mongoose.Schema({
          default:"unitiated"
          
     },
-    user:{
+    userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: User
     },
     dueDate:{
         type:Date,
-        default: date.format(new Date(), 'DD/MM/YYYY HH:mm:ss')
+        default: new Date()
     },
     timestamp:{
         type:Date,

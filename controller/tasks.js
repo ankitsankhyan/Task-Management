@@ -1,18 +1,30 @@
 const Task = require('../Model/Task');
-
+const date = require('date-and-time');
 module.exports.createTask =async(req, res) =>{
     try{
-        const {title, description,  dueDate} = req.body;
+        console.log(req.body);
+        const {title, description,  timeString,dateString, userId} = req.body;
+        const [hours, minutes] = timeString.split(":").map(Number);
+
+        // Split the date string into day, month, and year
+        const [day, month, year] = dateString.split("/").map(Number);
+        
+        // Create a new Date object
+      
+        const newDate = new Date(year, month - 1, day, hours, minutes);
+        console.log(date.format(newDate, 'YYYY/MM/DD HH:mm:ss'));
         const task = new Task({
             title,
             description,
-            dueDate
+            dueDate:newDate,
+            userId
         });
-        task.save();
+        await  task.save();
         res.status(200).json({
             message: "Task created successfully"
         })
     }catch(error){
+        console.log(error);
         res.status(500).json({
             error: error.message
         })
@@ -24,6 +36,7 @@ module.exports.createTask =async(req, res) =>{
 module.exports.updateTask = async (req, res) =>{
   try{
      const id = req.params.id;
+     console.log(id);
      const task = await Task.findById(id);
         if(!task){
         return res.status(404).json({
@@ -35,7 +48,7 @@ module.exports.updateTask = async (req, res) =>{
         task.title = title;
         task.description = description;
         task.dueDate = dueDate;
-        task.save();
+      await task.save();
         res.status(200).json({
             message: "Task updated successfully"
         })
@@ -57,7 +70,7 @@ module.exports.deleteTask = async (req, res) =>{
         })
         }
 
-        task.remove();
+        await Task.findByIdAndDelete(id);
         res.status(200).json({
             message: "Task deleted successfully"
         })
@@ -72,7 +85,7 @@ module.exports.deleteTask = async (req, res) =>{
 module.exports.updateStatus = async (req, res) => {
     try{
         const id = req.params.id;
-        const task = await Task.findById(id);
+        let task = await Task.findById(id);
         if(!task){
         return res.status(404).json({
             error: "Task not found"
@@ -81,7 +94,7 @@ module.exports.updateStatus = async (req, res) => {
        const possible = ["unitiated","inprogress","completed"];
          const {status} = req.body;
          task.status = possible[status];
-            task.save();
+         await task.save();
        return res.status(200).json({
             message: "Task status updated successfully"
         })

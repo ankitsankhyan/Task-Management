@@ -6,7 +6,9 @@ router.post('/create', isAuth, task.createTask);
 router.put('/update/:id', isAuth, task.updateTask);
 router.delete('/delete/:id', isAuth, task.deleteTask);
 router.put('/status/:id', isAuth, task.updateStatus);
-
+router.get('/', (req, res)=>{
+    res.send("Hello World");
+})
 
 module.exports = router;
 /**
@@ -17,6 +19,12 @@ module.exports = router;
  *       - task
  *     summary: Create a new task
  *     description: Endpoint to create a new task.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TaskCreate'
  *     responses:
  *       '201':
  *         description: Task created successfully
@@ -37,6 +45,12 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TaskUpdate'
  *     responses:
  *       '200':
  *         description: Task updated successfully
@@ -59,11 +73,6 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *     requestBody:
- *         required: true
- *         content:
- *            application/json: {}
- *                   
  *     responses:
  *       '204':
  *         description: Task deleted successfully
@@ -84,6 +93,12 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TaskStatusUpdate'
  *     responses:
  *       '200':
  *         description: Task status updated successfully
@@ -109,6 +124,7 @@ module.exports = router;
  *           type: string
  *           format: date
  *           description: The due date for the item in ISO 8601 format (e.g., "YYYY-MM-DD").
+ *       
  *       required:
  *         - title
  *         - description
@@ -134,7 +150,7 @@ module.exports = router;
  *       type: object
  *       properties:
  *         status:
- *           type: integer
+ *           type: string
  *           description: The status of the item.
  *       required:
  *         - status
