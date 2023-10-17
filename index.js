@@ -47,6 +47,7 @@ const swaggerOptions = {
 
  const job = new CronJob('0 19 * * *', Notification);
  job.start();
+// Notification();
 app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`);
     });

@@ -1,9 +1,11 @@
 const User = require('../Model/user');
 const nodemailer = require('nodemailer');
 const Tasks = require('../Model/Task');
-const date = require('date-and-time')
-const generateMailTransporter =()=>{
-  return  nodemailer.createTransport({
+const date = require('date-and-time');
+const kue = require('kue');
+let queue = kue.createQueue();
+const sendEmail =(target, message)=>{
+  let transport =   nodemailer.createTransport({
         host: "smtp.mailtrap.io",
         port: 2525,
         auth: {
@@ -11,8 +13,30 @@ const generateMailTransporter =()=>{
             pass: process.env.Nodemailer_pass
           }
     })
-}
+      console.log(target, message);
+    transport.sendMail({
+        from: 'ankitsankhyan04@gmail.com',
+        to:target,
+        subject: "Pending Tasks",
+        html: message
+    }, (err, info) => {
+        if (err) {
+            console.log('error is there');
+            return;
+        }
+        console.log('info is', info);
+    });
 
+
+}
+const executeJobs = ()=>{
+    console.log('checking ....')
+    queue.process('email', (job,done)=>{
+         sendEmail(job.data.user, job.data.html);
+         
+         done();
+    })
+}
 
 const Notification = async()=>{
     const users = await User.find();
@@ -36,28 +60,19 @@ const Notification = async()=>{
         message += '</ul>'
       
     }
+    let html =  `<h1>Hi ${users[i].name}</h1><br> ${message}</p>`
 
-    let transport = generateMailTransporter();
-   transport.sendMail({
-            from: 'ankitsankhyan04@gmail.com',
-            to: 'bcs_2021013@iiitm.ac.in',
-            subject: "Pending Tasks",
-            html: `<h1>Hi ${users[i].name}</h1><br> ${message}</p>`
-        }, (err, info) => {
-            if (err) {
-                console.log('error is there');
-                return;
-            }
-            console.log('info is', info);
-        });
-
-   
-   
-      
+     let job = queue.create('email', {
+        user: users[i].email,
+        html
+     }).attempts(2).backoff({delay:60000, type: 'fixed'}).save();
+    // job.attempt(3).backoff({delay : 60000, type : 'fixed'});
 
     }
+    console.log("executing jobs .....");
+   executeJobs();
 }
 
 module.exports = {
-    generateMailTransporter,Notification
+    Notification
 }
