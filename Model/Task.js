@@ -12,7 +12,8 @@ const task = new mongoose.Schema({
    },
     status:{
          type:String,
-         enum:["unitiated","inprogress","completed"]
+         enum:["unitiated","inprogress","completed"],
+         default:"unitiated"
          
     },
     user:{
@@ -21,7 +22,7 @@ const task = new mongoose.Schema({
     },
     dueDate:{
         type:Date,
-        default: data.addDays(new Date(), 7)
+        default: date.format(new Date(), 'DD/MM/YYYY HH:mm:ss')
     },
     timestamp:{
         type:Date,

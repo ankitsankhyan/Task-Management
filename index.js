@@ -9,9 +9,9 @@ const swaggerUi = require('swagger-ui-express');
 
 const cors = require('cors');
 const morgan = require('morgan');
-
+const logger = require('./Middleware/logging.js');
 app.use(express.json());
-app.use(morgan('dev'));
+app.use('/', logger.logging);
 
 
 app.use(cors());

@@ -1,69 +1,10 @@
 const express = require('express');
 const route = express.Router();
 const user = require('../controller/user.js');
-/**
- * @swagger
- * /api/user/signup:
- *   post:
- *     tags:
- *       - user
- *     summary: Signup user and return confirmation
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       '200':
- *         description: Successfully created the user
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Successfully created the user
- *                   example: User created successfully
- *       '500':
- *         description: Could not create the user
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error Message
- *                   example: "Email address could not be verified."
- *       '409':
- *         description: User already exists
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error Message
- *                   example: "User already exists"
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *           example: John
- *         email:
- *           type: string
- *           example: ankitsankhyan04@gmail.com
- *         password:
- *           type: string
- *           example: 123456
- */
+
 route.post('/signup', user.userSignup);
+route.post('/login', user.login);
+module.exports = route;
 /**
  * @swagger
  * /api/user/login:
@@ -109,18 +50,76 @@ route.post('/signup', user.userSignup);
  *                 error:
  *                   type: string
  *                   description: Error Message
- *                   example: "Email address could not be verified."
- *components:
- *  schemas:
- *    UserLogin:
- *      type: object
- *      properties:
- *        email:
- *          type: string
- *          example: ankitsankhyan04@gmail.com
- *        password:
- *          type: string
- *          example: "123456"
+ *                   example: "Email address could not be verified"
+ *
+ * /api/user/signup:
+ *   post:
+ *     tags:
+ *       - user
+ *     summary: Signup user and return confirmation
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       '200':
+ *         description: Successfully created the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Successfully created the user
+ *                   example: User created successfully
+ *       '500':
+ *         description: Could not create the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error Message
+ *                   example: "Email address could not be verified"
+ *       '409':
+ *         description: User already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error Message
+ *                   example: "User already exists"
+ *
+ * components:
+ *   schemas:
+ *     UserLogin:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           example: ankitsankhyan04@gmail.com
+ *         password:
+ *           type: string
+ *           example: "123456"
+ *     User:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           example: John
+ *         email:
+ *           type: string
+ *           example: ankitsankhyan04@gmail.com
+ *         password:
+ *           type: string
+ *           example: "123456"
  */
-route.post('/login', user.login);
-module.exports = route;
+
