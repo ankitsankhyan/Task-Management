@@ -12,7 +12,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const logger = require('./Middleware/logging.js');
 app.use(express.json());
-// app.use('/', logger.logging);
+app.use('/', logger.logging);
 app.use(morgan('dev'));
 // Notification();
 app.use(cors());
