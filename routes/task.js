@@ -6,9 +6,6 @@ router.post('/create', isAuth, task.createTask);
 router.put('/update/:id', isAuth, task.updateTask);
 router.delete('/delete/:id', isAuth, task.deleteTask);
 router.put('/status/:id', isAuth, task.updateStatus);
-router.get('/', (req, res)=>{
-    res.send("Hello World");
-})
 
 module.exports = router;
 /**
@@ -92,7 +89,7 @@ module.exports = router;
  *         in: path
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -120,15 +117,19 @@ module.exports = router;
  *         description:
  *           type: string
  *           description: A description of the item.
- *         dueDate:
+ *         timeString:
  *           type: string
- *           format: date
- *           description: The due date for the item in ISO 8601 format (e.g., "YYYY-MM-DD").
- *       
+ *           format: "HH:MM"
+ *           description: Time in the form of 24 hours (00:00 -> 23:59)
+ *         dateString:
+ *           type: string
+ *           format: "DD/MM/YYYY"
+ *           description: Date string in the form of DD/MM/YYYY
  *       required:
  *         - title
  *         - description
- *         - dueDate
+ *         - timeString
+ *         - dateString
  *     TaskUpdate:
  *       type: object
  *       properties:
@@ -138,14 +139,19 @@ module.exports = router;
  *         description:
  *           type: string
  *           description: A description of the item.
- *         dueDate:
+ *         timeString:
  *           type: string
- *           format: date
- *           description: The due date for the item in ISO 8601 format (e.g., "YYYY-MM-DD").
+ *           format: "HH:MM"
+ *           description: Time in the form of 24 hours (00:00 -> 23:59)
+ *         dateString:
+ *           type: string
+ *           format: "DD/MM/YYYY"
+ *           description: Date string in the form of DD/MM/YYYY
  *       required:
  *         - title
  *         - description
- *         - dueDate
+ *         - timeString
+ *         - dateString
  *     TaskStatusUpdate:
  *       type: object
  *       properties:
