@@ -54,7 +54,7 @@ const Notification = async()=>{
         message = '<h2>You have pending task as follows </h2> <ol>';
         for(let i = 0; i < tasks.length; i++){
              
-             message += '<li>' +  tasks[0].title + '\n Due Date is ' + date.format(tasks[0].dueDate, 'MM:DD:YYYY ') + ' <br> Due time is ' + date.format(tasks[0].dueDate, 'DD:MM') + '</li>';
+             message += '<li>' +  tasks[0].title + '\n Due Date is ' + date.format(tasks[0].dueDate, 'MM:DD:YYYY ') + ' <br> Due time is ' + date.format(tasks[0].dueDate, 'HH:mm') + '</li>';
 
         }
         message += '</ul>'
