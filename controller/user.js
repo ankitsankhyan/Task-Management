@@ -7,7 +7,7 @@ module.exports.userSignup =async (req, res) => {
     const user = await User.find({email});
     console.log(user);
     if(user.length > 0){
-      res.status(409).json({
+    return res.status(409).json({
         message: "User already exists"
       })
     }
